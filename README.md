@@ -1,6 +1,6 @@
 # Westhouse Dashboard
 
-Be sure create a `config.js` file inside the `src` directory, with the following file content:
+Be sure to create a `config.js` file inside the `src` directory, with the following file content:
 
 ```javascript
 // Be sure to replace `HOST NAME HERE` with an actual host name.

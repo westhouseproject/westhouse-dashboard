@@ -45,6 +45,7 @@
     "classnames": "^2.1.2",
     "concurrently": "0.0.5",
     "css-loader": "^0.14.5",
+    "d3": "^3.5.5",
     "defer-decorator": "^1.0.0",
     "eslint": "^0.23.0",
     "eslint-loader": "^0.14.0",

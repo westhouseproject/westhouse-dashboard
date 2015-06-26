@@ -41,7 +41,14 @@ export function getData() {
       return;
     }
 
-    dispatch({ type: GET_METRICS, data: data.aggregations.values.buckets });
+    dispatch({
+      type: GET_METRICS,
+      data: data.aggregations.values.buckets.map(point => ({
+        id: point.key.toString(),
+        date: new Date(point.key),
+        value: point.consumption.value
+      }))
+    });
   };
 
 }
