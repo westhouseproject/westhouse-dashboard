@@ -1,5 +1,6 @@
 import { GET_METRICS } from '../constants/actionTypes';
 import querystring from 'querystring';
+import { elasticsearchProxyHost } from '../config';
 
 const canonicalQuery = {
   aggs: {
@@ -18,10 +19,6 @@ const canonicalQuery = {
   }
 };
 
-// TODO: hard code the URL into a settings file instead of here.
-// const host = '142.58.183.207:5000';
-const host = 'localhost:4000';
-
 export function getData() {
 
   return async function foo(dispatch) {
@@ -30,7 +27,7 @@ export function getData() {
     });
 
     const response = await fetch(
-      `http://${host}/data?${query}`
+      `http://${elasticsearchProxyHost}/data?${query}`
     );
 
     const data = await response.json();

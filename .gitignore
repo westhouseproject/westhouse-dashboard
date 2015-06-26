@@ -1,5 +1,6 @@
 node_modules
 bundle.js
+src/config.js
 npm-debug.log
 public/*.svg
 public/*.ttf
