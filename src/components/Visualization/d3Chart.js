@@ -1,12 +1,9 @@
 import d3 from 'd3';
 
-export const d3Chart = {
-  create(el, props, data) {
-    console.log(data);
-
-    const margin = {top: 20, right: 20, bottom: 30, left: 50},
-        width = 960 - margin.left - margin.right,
-        height = 500 - margin.top - margin.bottom;
+export function create(el, props, data) {
+    const margin = {top: 20, right: 20, bottom: 30, left: 50};
+    const width = 960 - margin.left - margin.right;
+    const height = 500 - margin.top - margin.bottom;
 
     const x = d3.time.scale()
         .range([0, width]);
@@ -54,5 +51,4 @@ export const d3Chart = {
         .datum(data)
         .attr('class', 'line')
         .attr('d', line);
-  }
-};
+}

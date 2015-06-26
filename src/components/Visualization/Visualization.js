@@ -1,17 +1,17 @@
 import React, { Component } from 'react';
-import { d3Chart } from './d3Chart';
+import { create as createChart } from './d3Chart';
 import './Visualization.less';
 
 export default class Visualization extends Component {
   componentDidMount() {
     const el = React.findDOMNode(this.refs.chartContainer);
-    d3Chart.create(el, null, this.props.metrics);
+    createChart(el, {}, this.props.metrics);
   }
 
   componentDidUpdate() {
     const el = React.findDOMNode(this.refs.chartContainer);
     el.innerHTML = '';
-    d3Chart.create(el, null, this.props.metrics);
+    createChart(el, {}, this.props.metrics);
   }
 
   render() {
