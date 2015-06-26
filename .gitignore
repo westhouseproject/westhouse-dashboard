@@ -1,0 +1,9 @@
+node_modules
+bundle.js
+npm-debug.log
+public/*.svg
+public/*.ttf
+public/*.woff2
+public/*.js.map
+public/*.woff
+public/*.eot

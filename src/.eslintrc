@@ -1,0 +1,21 @@
+{
+  "globals": {
+    "localstorage": true
+  },
+  "env": {
+    "browser": true
+  },
+
+  "ecmaFeatures": {
+    "jsx": true
+  },
+
+  "plugins": [
+    "react"
+  ],
+
+  "rules": {
+    "strict": [2, "never"],
+    "no-var": [2]
+  }
+}
