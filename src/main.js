@@ -1,10 +1,9 @@
 import 'babel/polyfill';
+import 'normalize.css';
+import './styles.less';
 
 import React from 'react';
 import App from './components/App';
-import { getData } from './actions/metricsActions';
-
-getData();
 
 React.render(
   <App />,

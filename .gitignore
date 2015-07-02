@@ -8,3 +8,4 @@ public/*.woff2
 public/*.js.map
 public/*.woff
 public/*.eot
+bower_components

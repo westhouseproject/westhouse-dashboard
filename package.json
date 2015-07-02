@@ -5,7 +5,8 @@
     "develop:test": "karma start --single-run=false",
     "bundle": "webpack --config ./webpack.production.config.js -p --content-base ./public",
     "test": "karma start && npm run lint",
-    "lint": "eslint ./"
+    "lint": "eslint ./",
+    "postinstall": "bower install"
   },
   "eslintConfig": {
     "env": {
@@ -26,6 +27,13 @@
       ],
       "no-empty": [
         0
+      ],
+      "no-trailing-spaces": [
+        0
+      ],
+      "no-use-before-define": [
+        2,
+        "nofunc"
       ]
     }
   },
@@ -41,6 +49,7 @@
     "babel-plugin-remove-debugger": "^1.0.1",
     "babel-plugin-undefined-to-void": "^1.1.6",
     "babel-runtime": "^5.5.8",
+    "bower": "^1.4.1",
     "chokidar-cli": "^0.2.1",
     "classnames": "^2.1.2",
     "concurrently": "0.0.5",
@@ -62,11 +71,13 @@
     "karma-webpack": "^1.5.1",
     "less": "^2.5.0",
     "less-loader": "^2.2.0",
+    "loaders.css": "^0.1.1",
     "mocha": "^2.2.4",
     "normalize.css": "^3.0.3",
     "object-assign": "^3.0.0",
     "phantomjs-polyfill": "0.0.1",
     "react": "^0.13.3",
+    "react-loaders": "^1.2.3",
     "redux": "^0.12.0",
     "style-loader": "^0.12.1",
     "url-loader": "^0.5.6",

@@ -1,0 +1,6 @@
+{
+  "name": "no-name",
+  "dependencies": {
+    "weather-icons": "~1.3.2"
+  }
+}
