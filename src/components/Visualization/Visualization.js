@@ -1,136 +1,148 @@
-import { Component, PropTypes } from 'react';
+import { chart as chartStyle } from './Visualization.less';
+import { Component, findDOMNode } from 'react';
 import d3 from 'd3';
 
-export default class Visualization extends Component {
+// Some constants.
+const margin = { top: 20, right: 20, bottom: 30, left: 40 };
 
-  static propTypes = {
-    width: PropTypes.number.isRequired,
-    height: PropTypes.number.isRequired,
-    metrics: PropTypes.array.isRequired
+class Axis {
+  _drawAxis() {
+    d3.select(findDOMNode(this.refs.axis)).call(this.props.axis);
+  }
+
+  componentDidMount() {
+    this._drawAxis();
+  }
+
+  componentDidUpdate() {
+    this._drawAxis();
   }
 
   render() {
-    // TODO: refactor this code so that the axis are their own components.
+    const props =
+      (({ className, transform }) => ({className, transform}))(this.props);
+    return <g ref='axis' {...props} />;
+  }
+}
 
-    const margin = { top: 10, right: 30, bottom: 30, left: 30 };
-    const {
-      metrics,
-      width: widthWhole = 0,
-      height: heightWhole = 0
-    } = this.props;
-    // const width = widthWhole > 0 ? widthWhole - margin.left - margin.right : 0;
-    const height =
-      heightWhole > 0 ? heightWhole - margin.top - margin.bottom : 0;
+export default class Visualization extends Component {
 
-    if (!metrics.length) {
-      return (<div></div>);
-    }
-
-    const minTime = metrics[0].values[0].date;
-    const maxTime = metrics[0].values[metrics[0].values.length - 1].date;
-
-    const startHour = minTime.getHours();
-    const diff = maxTime - minTime;
-    const hoursElapsed = Math.floor(diff / (1000 * 60 * 60));
-
-    const min = Math.min(
-      metrics[0].values.reduce(
-        (prev, { value }) =>
-          value < prev ? value : prev,
-        metrics[0].values[0].value
-      ), metrics[1].values.reduce(
-        (prev, next) =>
-          next < prev ? next : prev,
-        metrics[1].values[0].value
-      )
-    );
-
-    const max = Math.max(
-      metrics[0].values.reduce(
-        (prev, { value }) =>
-          value > prev ? value : prev,
-        metrics[0].values[0].value
-      ), metrics[1].values.reduce(
-        (prev, next) =>
-          next > prev ? next : prev,
-        metrics[1].values[0].value
-      )
-    );
-
-    // const xScale = d3.time.scale()
-    //   .domain([minTime, maxTime]).range([0, width]);
-
-    // console.log(max, min);
-
-    const yScale = d3.scale.linear()
-      .domain([min, max])
-      .range([0, height]);
-
-    const xAxis = (
-      <g>
-        {Array(hoursElapsed).join(' ').split(' ').map((ignore, i) =>
-          (
-            <g key={i}>
-              <line x2='0' y2='0' />
-              <text>{`${i + startHour}`}</text>
-            </g>
-          )
-        )}
-      </g>
-    );
-
-    const yAxisTicks = 10;
-
-    const yAxis = (
-      <g>
-        {Array(yAxisTicks).join(' ').split(' ').map((ignore, i) =>
-          (
-            <g key={i}>
-              <line x2='-6' y2='0' />
-              <text>{`${(max - min) * ((i + 1) / yAxisTicks) + max}`}</text>
-            </g>
-          )
-        )}
-      </g>
-    );
-
-    // console.log(yScale(10));
-    // console.log(metrics.find(val => val.series === 'energy_consumption'));
-    const consumption = (
-      metrics
-        .find(val => val.series === 'energy_consumption')
-        .values
-        .map(point => {
-          console.log(point.value, yScale(point.value));
-          return <rect
-            key={point.id}
-            fill='#ffffff'
-            width={'10px'}
-            height={yScale(point.value)} />;
-        })
-    );
-
-    // console.log(metrics.find(val => val.series === 'energy_pr'))
-    const production = (
-      metrics.find(val => val.series === 'solar_pv_power').values.map(point => {
-        // console.log(yScale());
-        console.log(point.value, yScale(point.value));
-        return <rect
-          key={point.id}
-          fill='#ffffff'
-          width={'10px'}
-          height={yScale(point.value)} />;
-      })
-    );
-
-    return (
-      <svg width={widthWhole} height={heightWhole}>
-        {consumption}
-        {production}
-        {xAxis}
-        {yAxis}
-      </svg>
-    );
+  static defaultProps = {
+    height: 500,
+    data: []
   }
 
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      width: props.initialWidth || 960
+    };
+  }
+
+  _getChartContainer() { return findDOMNode(this.refs.chartContainer); }
+
+  _listenForWidthChange() {
+    const onWidthChange = () => {
+      requestAnimationFrame(() => {
+        const node = this._getChartContainer();
+        if (node && node.offsetWidth !== this.state.width) {
+          this.setState({
+            width: node.offsetWidth
+          });
+          return;
+        }
+        onWidthChange();
+      });
+    };
+
+    onWidthChange();
+  }
+
+  componentDidMount() { this._listenForWidthChange(); }
+  componentDidUpdate() { this._listenForWidthChange(); }
+
+  render() {
+    const { data } = this.props;
+    console.log(data);
+    if (data.length === 0) {
+      return <p>Currently loading data</p>;
+    }
+
+    const width = this.state.width - margin.left - margin.right;
+    const height = this.props.height - margin.top - margin.bottom;
+
+    // Think of an ordinal "scale" as a discrete, finite set, countable set.
+    // What we are doing here is establishing a mapping from the said set to
+    // pixel coordinate.
+    const x = d3.scale.ordinal()
+      .domain(data.map(({time}) => time))
+      .rangeRoundBands([0, width], .1);
+
+    const y = d3.scale.linear()
+      .domain([
+        d3.min(data, ({production}) => production),
+        d3.max(data, ({consumption}) => consumption)
+      ])
+      .range([height, 0]);
+
+    const xAxis = d3.svg.axis()
+      .scale(x)
+      .orient('bottom')
+      .tickFormat(d3.time.format('%H'));
+
+    const yAxis = d3.svg.axis()
+      .scale(y)
+      .orient('left')
+      .ticks(10, '%');
+
+    const line = d3.svg.line()
+      .x(({time}) => x(time) + x.rangeBand() / 2)
+      .y(({difference}) => y(difference));
+
+    return (
+      <div ref='chartContainer' className={chartStyle}>
+        <svg
+          width={width + margin.left + margin.right}
+          height={height + margin.bottom + margin.top}>
+          <g transform={`translate(${margin.left}, ${margin.top})`}>
+            <Axis
+              className='x axis'
+              scale={x}
+              transform={`translate(0, ${height})`}
+              axis={xAxis} />
+            <Axis
+              className='y axis'
+              scale={y}
+              axis={yAxis} />
+            {data.map((d, i) => {
+              return (
+                <g key={i}>
+                  <rect
+                    x={x(d.time)}
+                    width={x.rangeBand()}
+                    y={y(d.consumption)}
+                    height={y(0) - y(d.consumption)} />
+                  <rect
+                    className='negative'
+                    x={x(d.time)}
+                    width={x.rangeBand()}
+                    y={y(0)}
+                    height={y(d.production) - y(0)} />
+                  <circle
+                    className='circle'
+                    transform={
+                      `translate(${x(d.time) + x.rangeBand() / 2}, ${y(d.difference)})`
+                    }
+                    r={4}
+                    />
+                </g>
+              );
+            })}
+            <path d={line(data)}/>
+          </g>
+        </svg>
+      </div>
+    );
+  }
 }

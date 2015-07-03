@@ -1,20 +1,37 @@
-:local(.d3Chart) {
-  font: 10px sans-serif;
-
-  .axis path,
-  .axis line {
-    fill: none;
-    stroke: #000;
-    shape-rendering: crispEdges;
+:local(.chart) {
+  rect {
+    fill: fadeout(white, 60%);
+    &.negative {
+      fill: white;
+    }
   }
 
-  .x.axis path {
-    display: none;
+  text {
+    fill: white;
+    font: 10px sans-serif;
+    text-anchor: middle;
   }
 
-  .line {
+  path {
     fill: none;
-    stroke: steelblue;
-    stroke-width: 1.5px;
+    stroke: white;
+    stroke-width: 2px;
+  }
+
+  .axis {
+    text { font: 10px sans-serif; }
+    path, line {
+      fill: none;
+      stroke: white;
+      shape-rendering: crispEdge;
+    }
+
+    &.x path {
+      display: none;
+    }
+  }
+
+  .circle {
+    fill: white;
   }
 }
