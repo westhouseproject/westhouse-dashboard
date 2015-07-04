@@ -1,3 +1,5 @@
+import 'loaders.css';
+import './loaders-hack.less';
 import 'weather-icons/css/weather-icons.css';
 
 import { Component } from 'react';
@@ -8,6 +10,7 @@ import { bindActionCreators } from 'redux';
 import Visualization from '../Visualization';
 import weatherIconMappings from '../../weatherIconMappings';
 import { mainContainer as mainStyle } from './MainContainer.less';
+import LoadingIndicator from '../LoadingIndicator';
 import classnames from 'classnames';
 
 function utilityUnion(consumption, production) {
@@ -80,37 +83,47 @@ export default class MainContainer extends Component {
     const { metrics, weather, dispatch } = this.props;
     // const height = document.body.offsetHeight - 100;
 
-    // <Visualization width={width} height={height} metrics={metrics}/>
+    const content = (() => {
+      if (metrics === null || weather === null) {
+        return <LoadingIndicator />;
+      }
 
-    const consumption = metrics.filter(
-      metric => metric.series === 'energy_consumption'
-    );
-    if (consumption.length === 0) { return <div />; }
-    const production = metrics.filter(
-      metric => metric.series === 'solar_pv_power'
-    );
-    if (production.length === 0) { return <div />; }
+      // <Visualization width={width} height={height} metrics={metrics}/>
 
-    const merged = utilityUnion(consumption[0].values, production[0].values);
+      const consumption = metrics.filter(
+        metric => metric.series === 'energy_consumption'
+      );
+      if (consumption.length === 0) { return <div />; }
+      const production = metrics.filter(
+        metric => metric.series === 'solar_pv_power'
+      );
+      if (production.length === 0) { return <div />; }
 
-    // console.log(merged);
+      const merged = utilityUnion(consumption[0].values, production[0].values);
+
+      return (
+        <div>
+          {
+            weather !== null ?
+              <div ref='weather'>
+                <i className={
+                  classnames(
+                    'wi',
+                    `wi-${weatherIconMappings[weather.simplifiedCode]}`
+                  )
+                }></i>
+                {`${Math.round(weather.temperature)}\u00B0C`}
+              </div> :
+              ''
+          }
+          <Visualization data={merged} />
+        </div>
+      );
+    })();
 
     return (
       <div ref='container' className={mainStyle}>
-        {
-          weather !== null ?
-            <div ref='weather'>
-              <i className={
-                classnames(
-                  'wi',
-                  `wi-${weatherIconMappings[weather.simplifiedCode]}`
-                )
-              }></i>
-              {`${Math.round(weather.temperature)}\u00B0C`}
-            </div> :
-            ''
-        }
-        <Visualization data={merged} />
+        {content}
       </div>
     );
   }

@@ -1,6 +1,6 @@
 import { GET_METRICS } from '../constants/actionTypes';
 
-export default function metrics(state = [], action) {
+export default function metrics(state = null, action) {
   // console.log(action);
   switch (action.type) {
   case GET_METRICS:
