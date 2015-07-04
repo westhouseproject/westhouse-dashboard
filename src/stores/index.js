@@ -1,2 +1,2 @@
-export { default as metrics } from './metrics';
 export { default as weather } from './weather';
+export { default as utility } from './utility.js';
