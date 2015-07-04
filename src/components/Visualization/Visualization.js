@@ -1,29 +1,10 @@
 import { chart as chartStyle } from './Visualization.less';
 import { Component, findDOMNode } from 'react';
 import d3 from 'd3';
+import Axis from './Axis';
 
 // Some constants.
 const margin = { top: 20, right: 20, bottom: 30, left: 40 };
-
-class Axis {
-  _drawAxis() {
-    d3.select(findDOMNode(this.refs.axis)).call(this.props.axis);
-  }
-
-  componentDidMount() {
-    this._drawAxis();
-  }
-
-  componentDidUpdate() {
-    this._drawAxis();
-  }
-
-  render() {
-    const props =
-      (({ className, transform }) => ({className, transform}))(this.props);
-    return <g ref='axis' {...props} />;
-  }
-}
 
 export default class Visualization extends Component {
 
@@ -64,7 +45,6 @@ export default class Visualization extends Component {
 
   render() {
     const { data } = this.props;
-    console.log(data);
     if (data.length === 0) {
       return <p>Currently loading data</p>;
     }
@@ -94,7 +74,7 @@ export default class Visualization extends Component {
     const yAxis = d3.svg.axis()
       .scale(y)
       .orient('left')
-      .ticks(10, '%');
+      .ticks(10);
 
     const line = d3.svg.line()
       .x(({time}) => x(time) + x.rangeBand() / 2)
@@ -134,12 +114,12 @@ export default class Visualization extends Component {
                     transform={
                       `translate(${x(d.time) + x.rangeBand() / 2}, ${y(d.difference)})`
                     }
-                    r={4}
+                    r={8}
                     />
                 </g>
               );
             })}
-            <path d={line(data)}/>
+            <path className='chart-line' d={line(data)}/>
           </g>
         </svg>
       </div>
