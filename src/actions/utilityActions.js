@@ -78,7 +78,7 @@ function extractSeries(data, series) {
 }
 
 export async function getData() {
-  const action = { type: GET_UTILITY_DATA, data: [] };
+  const action = { type: GET_UTILITY_DATA, data: null };
 
   try {
     const query = querystring.stringify({ query: getQueryForToday() });

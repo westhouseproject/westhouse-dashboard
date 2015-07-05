@@ -1,0 +1,1 @@
+const visualizationPadding = 80;

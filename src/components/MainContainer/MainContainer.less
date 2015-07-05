@@ -1,7 +1,17 @@
 :local(.mainContainer) {
-  min-width: 100%;
-  min-height: 100%;
+  width: 100vw;
+  height: 100vh;
   background-color: darken(#87CEEB, 20%);
   color: white;
+  position: relative;
 
+  flex-direction: column;
+
+  .visualization {
+    overflow-y: scroll;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    box-sizing: border-box;
+  }
 }

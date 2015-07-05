@@ -12,6 +12,7 @@ import weatherIconMappings from '../../weatherIconMappings';
 import { mainContainer as mainStyle } from './MainContainer.less';
 import LoadingIndicator from '../LoadingIndicator';
 import classnames from 'classnames';
+import { visualizationPadding } from '../../constants/styles';
 
 @connect(state => ({ utility: state.utility, weather: state.weather }))
 export default class MainContainer extends Component {
@@ -39,11 +40,15 @@ export default class MainContainer extends Component {
 
       return (
         <div>
-          <div ref='weather'>
+          <div>
             <i className={classnames('wi', weatherIconClass)} />
             {`${Math.round(weather.temperature)}\u00B0C`}
           </div>
-          <Visualization data={utility} />
+          <div
+            style={{ padding: `${visualizationPadding}px` }}
+            className='visualization'>
+            <Visualization data={utility} />
+          </div>
         </div>
       );
     })();
