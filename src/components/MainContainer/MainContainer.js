@@ -71,9 +71,6 @@ export default class MainContainer extends Component {
                   Controls
                 </Link>
               </li>
-              <li>
-                <Link to='/goals' activeClassName='active-link'>Goals</Link>
-              </li>
             </ul>
           </div>
         </div>

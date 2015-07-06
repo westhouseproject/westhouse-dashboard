@@ -66,7 +66,7 @@ function getQueryForToday() {
           values: {
             'date_histogram': {
               field: 'time',
-              interval: '1h'
+              interval: '2h'
             },
             aggs: {
               consumption: {

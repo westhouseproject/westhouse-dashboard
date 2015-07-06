@@ -3,9 +3,10 @@ import { Component, findDOMNode } from 'react';
 import d3 from 'd3';
 import Axis from './Axis';
 import { topPadding, bottomPadding } from '../../constants/styles';
+import DonutChart from './DonutChart';
 
 // Some constants.
-const margin = { top: 20, right: 20, bottom: 30, left: 50 };
+const margin = { top: 20, right: 20, bottom: 30, left: 280 };
 
 export default class Visualization extends Component {
 
@@ -60,8 +61,6 @@ export default class Visualization extends Component {
     const height =
       stateHeight - margin.top - margin.bottom - topPadding - bottomPadding;
 
-    // console.log(width, height);
-
     // Think of an ordinal "scale" as a discrete, finite set, countable set.
     // What we are doing here is establishing a mapping from the said set to
     // pixel coordinate.
@@ -79,8 +78,7 @@ export default class Visualization extends Component {
     const xAxis = d3.svg.axis()
       .scale(x)
       .orient('bottom')
-      .tickFormat(d3.time.format('%H:00'))
-      .ticks(10);
+      .tickFormat(d3.time.format('%H:00'));
 
     const yAxis = d3.svg.axis()
       .scale(y)
@@ -96,6 +94,7 @@ export default class Visualization extends Component {
         <svg
           width={width + margin.left + margin.right}
           height={height + margin.bottom + margin.top}>
+          <DonutChart />
           <g transform={`translate(${margin.left}, ${margin.top})`}>
             <Axis
               className='x axis'
