@@ -33,7 +33,7 @@ export default class Visualization extends Component {
           window.innerHeight !== this.state.height
         ) {
           this.setState({
-            width: node.offsetWidth,
+            width: node && node.offsetWidth || this.state.width,
             height: window.innerHeight
           });
           return;
@@ -49,7 +49,7 @@ export default class Visualization extends Component {
   componentDidUpdate() { this._listenForDimensionChange(); }
 
   render() {
-    const { data } = this.props;
+    const { utility: data } = this.props;
     if (data.length === 0) {
       return <p>Currently loading data</p>;
     }

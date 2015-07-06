@@ -4,6 +4,8 @@ import './styles.less';
 
 import React from 'react';
 import App from './components/App';
+import Router, { Route, DefaultRoute } from 'react-router';
+import Visualization from './components/Visualization';
 
 import querystring from 'querystring';
 import { elasticsearchProxyHost } from './config';
@@ -43,7 +45,12 @@ import { elasticsearchProxyHost } from './config';
   console.log(data);
 })();
 
-React.render(
-  <App />,
-  document.getElementById('container')
+const routes = (
+  <Route path='/' handler={App}>
+    <DefaultRoute handler={Visualization} />
+  </Route>
 );
+
+Router.run(routes, Route.HashLocation, (Root) => {
+  React.render(<Root />, document.getElementById('container'));
+});
