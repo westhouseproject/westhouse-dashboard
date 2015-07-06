@@ -1,2 +1,2 @@
 export const topPadding = 100;
-export const bottomPadding = 100;
+export const bottomPadding = 50;

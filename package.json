@@ -82,7 +82,7 @@
     "phantomjs-polyfill": "0.0.1",
     "react": "^0.13.3",
     "react-loaders": "^1.2.3",
-    "react-router": "^0.13.3",
+    "react-router": "^1.0.0-beta3",
     "redux": "^0.12.0",
     "style-loader": "^0.12.1",
     "url-loader": "^0.5.6",

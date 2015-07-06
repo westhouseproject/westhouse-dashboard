@@ -7,13 +7,13 @@ import { connect } from 'redux/react';
 import * as utilityActions from '../../actions/utilityActions';
 import * as weatherActions from '../../actions/weatherActions';
 import { bindActionCreators } from 'redux';
-// import Visualization from '../Visualization';
+import Visualization from '../Visualization';
 import weatherIconMappings from '../../weatherIconMappings';
 import { mainContainer as mainStyle } from './MainContainer.less';
 import LoadingIndicator from '../LoadingIndicator';
 import classnames from 'classnames';
 import { topPadding, bottomPadding } from '../../constants/styles';
-import { RouteHandler, Link } from 'react-router';
+import { Link } from 'react-router';
 
 @connect(state => ({ utility: state.utility, weather: state.weather }))
 export default class MainContainer extends Component {
@@ -32,6 +32,7 @@ export default class MainContainer extends Component {
   render() {
     const { utility, weather } = this.props;
 
+
     const content = (() => {
       if (utility === null || weather === null) {
         return <LoadingIndicator animationKey='line-scale' />;
@@ -39,6 +40,11 @@ export default class MainContainer extends Component {
 
       const weatherIconClass =
         `wi-${weatherIconMappings[weather.simplifiedCode]}`;
+
+      const mainBody =
+        this.props.children ?
+          this.props.children :
+          <Visualization data={utility} />;
 
       return (
         <div>
@@ -53,7 +59,7 @@ export default class MainContainer extends Component {
               bottomPadding: `${bottomPadding}px`
             }}
             className='view-container'>
-            <RouteHandler {...{utility, weather}}/>
+            {mainBody}
           </div>
           <div className='navigation'>
             <ul>

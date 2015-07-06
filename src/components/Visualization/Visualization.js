@@ -2,7 +2,7 @@ import { chart as chartStyle } from './Visualization.less';
 import { Component, findDOMNode } from 'react';
 import d3 from 'd3';
 import Axis from './Axis';
-import { visualizationPadding as visPadding } from '../../constants/styles';
+import { topPadding, bottomPadding } from '../../constants/styles';
 
 // Some constants.
 const margin = { top: 20, right: 20, bottom: 30, left: 40 };
@@ -49,15 +49,18 @@ export default class Visualization extends Component {
   componentDidUpdate() { this._listenForDimensionChange(); }
 
   render() {
-    const { utility: data } = this.props;
+    const { data: data } = this.props;
     if (data.length === 0) {
       return <p>Currently loading data</p>;
     }
 
     const { width: stateWidth, height: stateHeight } = this.state;
 
-    const width = stateWidth - margin.left - margin.right;
-    const height = stateHeight - margin.top - margin.bottom - visPadding - 10;
+    const width = stateWidth - margin.left - margin.right + 10;
+    const height =
+      stateHeight - margin.top - margin.bottom - topPadding - bottomPadding;
+
+    console.log(width, height);
 
     // Think of an ordinal "scale" as a discrete, finite set, countable set.
     // What we are doing here is establishing a mapping from the said set to
