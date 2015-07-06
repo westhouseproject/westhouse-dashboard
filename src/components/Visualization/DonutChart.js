@@ -24,7 +24,7 @@ export default class DonutChart {
       .attr('transform', 'translate(0, 70)')
       .style('text-transform', 'uppercase')
       .style('font-size', '60px')
-      .text('5%');
+      .text('20%');
 
     g1.append('text')
       .attr('transform', 'translate(0, 100)')
