@@ -12,8 +12,8 @@ import weatherIconMappings from '../../weatherIconMappings';
 import { mainContainer as mainStyle } from './MainContainer.less';
 import LoadingIndicator from '../LoadingIndicator';
 import classnames from 'classnames';
-import { visualizationPadding } from '../../constants/styles';
-import { RouteHandler } from 'react-router';
+import { topPadding, bottomPadding } from '../../constants/styles';
+import { RouteHandler, Link } from 'react-router';
 
 @connect(state => ({ utility: state.utility, weather: state.weather }))
 export default class MainContainer extends Component {
@@ -48,12 +48,27 @@ export default class MainContainer extends Component {
             <span>{`${Math.round(weather.temperature)}\u00B0C`}</span>
           </div>
           <div
-            style={{ paddingTop: `${visualizationPadding}px` }}
+            style={{
+              paddingTop: `${topPadding}px`,
+              bottomPadding: `${bottomPadding}px`
+            }}
             className='view-container'>
             <RouteHandler {...{utility, weather}}/>
           </div>
-          <div>
-            <ul></ul>
+          <div className='navigation'>
+            <ul>
+              <li>
+                <Link to='/' activeClassName='active-link'>Main</Link>
+              </li>
+              <li>
+                <Link to='/controls' activeClassName='active-link'>
+                  Controls
+                </Link>
+              </li>
+              <li>
+                <Link to='/goals' activeClassName='active-link'>Goals</Link>
+              </li>
+            </ul>
           </div>
         </div>
       );

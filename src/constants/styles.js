@@ -1,1 +1,2 @@
-export const visualizationPadding = 100;
+export const topPadding = 100;
+export const bottomPadding = 100;
