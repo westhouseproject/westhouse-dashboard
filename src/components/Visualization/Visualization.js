@@ -2,6 +2,7 @@ import { chart as chartStyle } from './Visualization.less';
 import { Component, findDOMNode } from 'react';
 import d3 from 'd3';
 import Axis from './Axis';
+import { visualizationPadding as visPadding } from '../../constants/styles';
 
 // Some constants.
 const margin = { top: 20, right: 20, bottom: 30, left: 40 };
@@ -9,7 +10,6 @@ const margin = { top: 20, right: 20, bottom: 30, left: 40 };
 export default class Visualization extends Component {
 
   static defaultProps = {
-    height: 500,
     data: []
   }
 
@@ -17,31 +17,36 @@ export default class Visualization extends Component {
     super(props);
 
     this.state = {
-      width: props.initialWidth || 960
+      width: props.initialWidth || 960,
+      height: props.initialHeight || 500
     };
   }
 
   _getChartContainer() { return findDOMNode(this.refs.chartContainer); }
 
-  _listenForWidthChange() {
-    const onWidthChange = () => {
+  _listenForDimensionChange() {
+    const onDimensionChange = () => {
       requestAnimationFrame(() => {
         const node = this._getChartContainer();
-        if (node && node.offsetWidth !== this.state.width) {
+        if (
+          node && node.offsetWidth !== this.state.width ||
+          window.innerHeight !== this.state.height
+        ) {
           this.setState({
-            width: node.offsetWidth
+            width: node.offsetWidth,
+            height: window.innerHeight
           });
           return;
         }
-        onWidthChange();
+        onDimensionChange();
       });
     };
 
-    onWidthChange();
+    onDimensionChange();
   }
 
-  componentDidMount() { this._listenForWidthChange(); }
-  componentDidUpdate() { this._listenForWidthChange(); }
+  componentDidMount() { this._listenForDimensionChange(); }
+  componentDidUpdate() { this._listenForDimensionChange(); }
 
   render() {
     const { data } = this.props;
@@ -49,8 +54,10 @@ export default class Visualization extends Component {
       return <p>Currently loading data</p>;
     }
 
-    const width = this.state.width - margin.left - margin.right;
-    const height = this.props.height - margin.top - margin.bottom;
+    const { width: stateWidth, height: stateHeight } = this.state;
+
+    const width = stateWidth - margin.left - margin.right;
+    const height = stateHeight - margin.top - margin.bottom - visPadding - 10;
 
     // Think of an ordinal "scale" as a discrete, finite set, countable set.
     // What we are doing here is establishing a mapping from the said set to

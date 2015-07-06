@@ -9,3 +9,5 @@ public/*.js.map
 public/*.woff
 public/*.eot
 bower_components
+deploy.sh
+bundle.tar.gz

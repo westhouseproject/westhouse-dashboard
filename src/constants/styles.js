@@ -1,1 +1,1 @@
-const visualizationPadding = 80;
+export const visualizationPadding = 100;

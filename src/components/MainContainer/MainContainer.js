@@ -1,4 +1,4 @@
-import 'loaders.css';
+import 'loaders.css/loaders.css';
 import './loaders-hack.less';
 import 'weather-icons/css/weather-icons.css';
 
@@ -30,7 +30,6 @@ export default class MainContainer extends Component {
 
   render() {
     const { utility, weather, dispatch } = this.props;
-    // const height = document.body.offsetHeight - 100;
 
     const content = (() => {
       if (utility === null || weather === null) { return <LoadingIndicator />; }
@@ -40,14 +39,18 @@ export default class MainContainer extends Component {
 
       return (
         <div>
-          <div>
+          <div className='weather-widget'>
             <i className={classnames('wi', weatherIconClass)} />
-            {`${Math.round(weather.temperature)}\u00B0C`}
+            {' '}
+            <span>{`${Math.round(weather.temperature)}\u00B0C`}</span>
           </div>
           <div
-            style={{ padding: `${visualizationPadding}px` }}
+            style={{ paddingTop: `${visualizationPadding}px` }}
             className='visualization'>
             <Visualization data={utility} />
+          </div>
+          <div>
+            
           </div>
         </div>
       );
