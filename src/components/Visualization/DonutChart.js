@@ -42,9 +42,9 @@ export default class DonutChart {
 
     const g = el.selectAll('.arc')
       .data(pie([
-        { label: 'done', value: 10, fill: '0.8' },
-        { label: 'doing', value: 5, fill: '0.9' },
-        { label: 'remain', value: 85, fill: '0.2' }
+        { label: 'done', value: 50, fill: '0.5' },
+        { label: 'doing', value: 20, fill: '0.9' },
+        { label: 'remain', value: 30, fill: '0.2' }
       ]))
       .enter()
         .append('g')
@@ -53,7 +53,7 @@ export default class DonutChart {
     g.append('path')
       .attr('d', arc)
       .style('fill', 'white')
-      .style('fill-opacity', (d) => d.fill);
+      .style('fill-opacity', d => console.log(d.data.fill) || d.data.fill);
   }
 
   componentDidMount() {
