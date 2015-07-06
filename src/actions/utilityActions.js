@@ -6,6 +6,9 @@ const energyConsumptionSeries = 'energy_consumption';
 const solarPVSeries = 'solar_pv_power';
 const intendedSeries = [energyConsumptionSeries, solarPVSeries];
 
+const fakeSolar = x =>
+  -Math.cos(Math.PI * 2 * (x / 24)) + 1 + Math.random() / 2;
+
 function utilityUnion(consumption, production) {
   const hash = {};
   consumption.forEach((con) => {
@@ -28,7 +31,12 @@ function utilityUnion(consumption, production) {
       hash[prod.id].consumption = 0;
     }
     hash[prod.id].production = prod.value;
-    hash[prod.id].difference = hash[prod.id].consumption + prod.value;
+
+    // TODO: remove the following.
+    hash[prod.id].production = -fakeSolar(hash[prod.id].time.getHours()) * 0.25;
+
+    hash[prod.id].difference =
+      hash[prod.id].consumption + hash[prod.id].production;
   });
   const merged = Object
     .keys(hash)

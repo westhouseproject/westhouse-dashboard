@@ -2,8 +2,14 @@ import d3 from 'd3';
 import { findDOMNode } from 'react';
 
 export default class Axis {
+
+  static defaultProps = {
+    callback: () => {}
+  }
+
   _drawAxis() {
-    d3.select(findDOMNode(this.refs.axis)).call(this.props.axis);
+    const el = d3.select(findDOMNode(this.refs.axis)).call(this.props.axis);
+    this.props.callback(el);
   }
 
   componentDidMount() {

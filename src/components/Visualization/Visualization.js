@@ -5,7 +5,7 @@ import Axis from './Axis';
 import { topPadding, bottomPadding } from '../../constants/styles';
 
 // Some constants.
-const margin = { top: 20, right: 20, bottom: 30, left: 40 };
+const margin = { top: 20, right: 20, bottom: 30, left: 50 };
 
 export default class Visualization extends Component {
 
@@ -60,7 +60,7 @@ export default class Visualization extends Component {
     const height =
       stateHeight - margin.top - margin.bottom - topPadding - bottomPadding;
 
-    console.log(width, height);
+    // console.log(width, height);
 
     // Think of an ordinal "scale" as a discrete, finite set, countable set.
     // What we are doing here is establishing a mapping from the said set to
@@ -79,7 +79,8 @@ export default class Visualization extends Component {
     const xAxis = d3.svg.axis()
       .scale(x)
       .orient('bottom')
-      .tickFormat(d3.time.format('%H'));
+      .tickFormat(d3.time.format('%H:00'))
+      .ticks(10);
 
     const yAxis = d3.svg.axis()
       .scale(y)
@@ -104,7 +105,17 @@ export default class Visualization extends Component {
             <Axis
               className='y axis'
               scale={y}
-              axis={yAxis} />
+              axis={yAxis}
+              transform={`translate(-10, 0)`}
+              callback={el => {
+                el
+                  .append('text')
+                    .attr('transform', 'rotate(-90)')
+                    .attr('y', 6)
+                    .attr('dy', '.71em')
+                    .style('text-anchor', 'end')
+                    .text('kWh');
+              }} />
             {data.map((d, i) => {
               return (
                 <g key={i}>
