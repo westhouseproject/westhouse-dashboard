@@ -31,14 +31,17 @@
       text-align: center;
       li {
         display: inline-block;
-        padding: 10px;
-        background-color: fadeout(black, 75%);
-        margin: 5px;
-        font-size: 1.5em;
-        margin-bottom: 0;
         a {
+          padding: 10px;
+          background-color: fadeout(black, 50%);
+          margin: 5px;
+          font-size: 1.5em;
+          margin-bottom: 0;
           color: white;
           text-decoration: none;
+          &:hover {
+            background-color: fadeout(black, 75%);
+          }
         }
       }
     }

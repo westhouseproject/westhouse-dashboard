@@ -53,7 +53,7 @@ export default class DonutChart {
     g.append('path')
       .attr('d', arc)
       .style('fill', 'white')
-      .style('fill-opacity', d => console.log(d.data.fill) || d.data.fill);
+      .style('fill-opacity', d => d.data.fill);
   }
 
   componentDidMount() {
