@@ -1,4 +1,4 @@
-# Westhouse Dashboard
+# Westhouse Dashboard and Viz
 
 Be sure to create a `config.js` file inside the `src` directory, with the following file content:
 
